@@ -1,0 +1,224 @@
+{
+  "info": {
+    "name": "Tuntu Lotto API",
+    "description": "Postman collection for the Tuntu Lotto Flask API.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:5000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Webhook - WhatsApp Reply",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/x-www-form-urlencoded"
+          }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            { "key": "From", "value": "whatsapp:+254700419377" },
+            { "key": "WaId", "value": "254700419377" },
+            { "key": "ProfileName", "value": "Kahenya" },
+            { "key": "MessageSid", "value": "SM1234567890" },
+            { "key": "Body", "value": "start" },
+            { "key": "FlowData", "value": "{\"draw\":\"weekly\",\"selection_mode\":\"quick_pick\"}" },
+            { "key": "InteractiveData", "value": "" }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/webhook/reply",
+          "host": ["{{baseUrl}}"],
+          "path": ["webhook", "reply"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Webhook - M-Pesa Callback",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"Body\": {\n    \"stkCallback\": {\n      \"CheckoutRequestID\": \"ws_CO_1234567890abcdef\",\n      \"ResultCode\": 0,\n      \"ResultDesc\": \"The service request is processed successfully.\",\n      \"CallbackMetadata\": {\n        \"Item\": [\n          { \"Name\": \"Amount\", \"Value\": 50 },\n          { \"Name\": \"MpesaReceiptNumber\", \"Value\": \"ABCDE12345\" },\n          { \"Name\": \"PhoneNumber\", \"Value\": \"254700419377\" },\n          { \"Name\": \"CheckoutRequestID\", \"Value\": \"ws_CO_1234567890abcdef\" }\n        ]\n      }\n    }\n  }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/webhook/mpesa",
+          "host": ["{{baseUrl}}"],
+          "path": ["webhook", "mpesa"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Webhook - M-Pesa B2C Result Callback",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"Result\": {\n    \"ResultType\": 0,\n    \"ResultCode\": 0,\n    \"ResultDesc\": \"The service request has been processed successfully.\",\n    \"OriginatorConversationID\": \"12345-67890-12345\",\n    \"ConversationID\": \"AG_20191223_00004d31b0cb2c33d45e\",\n    \"ResultParameters\": {\n      \"ResultParameter\": [\n        { \"Key\": \"TransactionReceipt\", \"Value\": \"NLJ51H8NOH\" },\n        { \"Key\": \"TransactionAmount\", \"Value\": 200 },\n        { \"Key\": \"TransactionCompletedDateTime\", \"Value\": \"20260531143000\" },\n        { \"Key\": \"ReceiverPartyPublicName\", \"Value\": \"254700419377 - John Doe\" }\n      ]\n    }\n  }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/webhook/mpesa/b2c/result",
+          "host": ["{{baseUrl}}"],
+          "path": ["webhook", "mpesa", "b2c", "result"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Webhook - M-Pesa B2C Timeout Callback",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"Result\": {\n    \"ResultType\": 1,\n    \"ResultCode\": 1,\n    \"ResultDesc\": \"The transaction could not be completed because of a timeout.\",\n    \"OriginatorConversationID\": \"12345-67890-12345\",\n    \"ConversationID\": \"AG_20191223_00004d31b0cb2c33d45e\"\n  }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/webhook/mpesa/b2c/timeout",
+          "host": ["{{baseUrl}}"],
+          "path": ["webhook", "mpesa", "b2c", "timeout"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Draw Results - Submit Winning Numbers",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"draw\": \"weekly\",\n  \"winning_numbers\": [1, 2, 3, 4, 5, 6],\n  \"draw_date\": \"2026-06-05\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/draw/results",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "draw", "results"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Admin - Force Winner (500 Bob)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"ticket_id\": \"TUNTU-UUS4B6\",\n  \"prize_type\": \"Ksh 500\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/admin/force-win",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "admin", "force-win"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Admin - Force Winner (Custom Winning Numbers)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"ticket_id\": \"TUNTU-UUS4B6\",\n  \"winning_numbers\": [4, 6, 22, 24, 34, 41]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/admin/force-win",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "admin", "force-win"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Admin - B2C Test Payment",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"phone_number\": \"254700419377\",\n  \"amount\": 200,\n  \"ticket_id\": \"TUNTU-B2C-TEST\",\n  \"remarks\": \"Test payout\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/admin/b2c-test",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "admin", "b2c-test"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Verify Ticket",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/verify/TUNTU-UUS4B6",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "verify", "TUNTU-UUS4B6"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
